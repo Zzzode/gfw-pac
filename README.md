@@ -16,32 +16,50 @@
 
 ## gfw-pac.py 使用说明
 
-    usage: gfw-pac.py -f PAC -p PROXY [-h] [-i GFWLIST_FILE]
-                      [--user-rule USER_RULE_FILE]
-                      [--direct-rule DIRECT_RULE_FILE]
-                      [--localtld-rule LOCAL_TLD_RULE_FILE]
-                      [--ip-file IP_FILE]
+```shell
+usage: gfw-pac.py [-h] [-i GFWLIST] -f PAC -p PROXY [--user-rule USER_RULE] [--direct-rule DIRECT_RULE] [--localtld-rule LOCALTLD_RULE] [--ip-file IP_FILE]
+
+options:
+  -h, --help            show this help message and exit
+  -i GFWLIST, --input GFWLIST
+                        path to gfwlist
+  -f PAC, --file PAC    path to output pac
+  -p PROXY, --proxy PROXY
+                        the proxy parameter in the pac file, for example, "SOCKS5 127.0.0.1:1080;"
+  --user-rule USER_RULE
+                        user rule file, which will be appended to gfwlist
+  --direct-rule DIRECT_RULE
+                        user rule file, contains domains not bypass proxy
+  --localtld-rule LOCALTLD_RULE
+                        local TLD rule file, contains TLDs with a leading dot not bypass proxy
+  --ip-file IP_FILE     delegated-apnic-latest from apnic.net
+```
 
 参数说明：
 
-    -h 显示帮助
-    -i 指定本地 gfwlist 文件，若不指定则自动下载
-    -f (必须)输出的 pac 文件
-    -p (必须)指定代理服务器
-    --user-rule 自定义使用代理的域名文件，文件里每行一个域名
-    --direct-rule 自定义不使用代理的域名文件，文件里每行一个域名
-    --localtld-rule 自定义不使用代理的顶级域，文件里每行一个域名，必须带前导圆点（例如 .test）
-    --ip-file 指定本地的从 apnic 下载的 IP 分配文件。若不指定则自动从 apnic 下载
+```
+-h 显示帮助
+-i 指定本地 gfwlist 文件，若不指定则自动下载
+-f (必须)输出的 pac 文件
+-p (必须)指定代理服务器
+--user-rule 自定义使用代理的域名文件，文件里每行一个域名
+--direct-rule 自定义不使用代理的域名文件，文件里每行一个域名
+--localtld-rule 自定义不使用代理的顶级域，文件里每行一个域名，必须带前导圆点（例如 .test）
+--ip-file 指定本地的从 apnic 下载的 IP 分配文件。若不指定则自动从 apnic 下载
+```
 
 举例：
 
-    ./gfw-pac.py -i gfwlist.txt \
-                 -f gfw.pac \
-                 -p "PROXY 192.168.1.200:3128; DIRECT" \
-                 --user-rule=custom-domains.txt \
-                 --direct-rule=direct-domains.txt \
-                 --localtld-rule=local-tlds.txt \
-                 --ip-file=delegated-apnic-latest.txt
+```shell
+python3 gfw-pac.py \
+        -i gfwlist.txt \
+        -f gfw.pac \
+        -p "PROXY 127.0.0.1:10809; SOCKS5 127.0.0.1:10808; DIRECT" \
+        --user-rule custom-domains.txt \
+        --direct-rule direct-domains.txt \
+        --localtld-rule local-tlds.txt \
+        --ip-file delegated-apnic-latest.txt
+```
 
 ## 疑难解答
 
